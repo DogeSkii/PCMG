@@ -49,4 +49,5 @@ After running the script, an SVG file (`contour_map.svg`) will be generated, con
 
 ## License
 
+Procedural Contour Map Generator © 2025 by DogeSkii is licensed under CC BY 4.0 
 
