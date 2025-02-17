@@ -29,7 +29,7 @@ To get started, you'll need to install the required Python dependencies. You can
 Once the dependencies are installed, you can generate the contour map by running the Python script.
 
 ```bash
-python contour_map_generator.py
+create.py
 ```
 
 This will generate a heightmap using Perlin noise and create contour lines at different levels. The contour map will be exported as an SVG file.
