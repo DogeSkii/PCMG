@@ -15,8 +15,8 @@ To get started, you'll need to install the required Python dependencies. You can
 
 1. Clone this repository:
    ```bash
-   git clone <repository_url>
-   cd <repository_name>
+   git clone https://github.com/DogeSkii/PCMG
+   cd PCMG
    ```
 
 2. Install the dependencies:
