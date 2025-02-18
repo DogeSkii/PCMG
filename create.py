@@ -3,6 +3,7 @@ import noise
 import matplotlib.pyplot as plt
 import svgwrite
 from tqdm import tqdm  # Importing tqdm for progress bar
+import random  # Import random for generating offsets
 
 # === CONFIGURATION ===
 WIDTH = 1024  # Image width
@@ -18,12 +19,18 @@ DEFAULT_LINE_THICKNESS = 2  # Slightly thicker line thickness for contours
 # === GENERATE HEIGHTMAP ===
 def generate_heightmap(width, height, scale):
     height_map = np.zeros((width, height))
+    
+    # Introduce random offsets for x and y to ensure different maps each run
+    offset_x = random.uniform(0, 10000)
+    offset_y = random.uniform(0, 10000)
+    
     for y in tqdm(range(height), desc="Generating heightmap", unit="row"):  # Add progress bar for heightmap generation
         for x in range(width):
-            height_map[x, y] = noise.pnoise2(x / scale, y / scale,
+            height_map[x, y] = noise.pnoise2((x + offset_x) / scale, (y + offset_y) / scale,
                                              octaves=DEFAULT_OCTAVES,
                                              persistence=DEFAULT_PERSISTENCE,
                                              lacunarity=DEFAULT_LACUNARITY)
+    
     # Normalize to 0-1 range
     height_map = (height_map - np.min(height_map)) / (np.max(height_map) - np.min(height_map))
     return height_map
@@ -61,7 +68,7 @@ def export_svg(height_map, filename, levels, line_thickness):
 
 
 # === PARAMETERS ===
-scale = 150.0  # Change this to adjust noise scale
+scale = DEFAULT_SCALE + random.uniform(-10, 10)  # Introduce slight variation in scale
 contour_levels = 15  # Number of contour levels
 line_thickness = 2  # Slightly thicker line thickness for contours
 output_filename = "contour_map.svg"  # Output file name
