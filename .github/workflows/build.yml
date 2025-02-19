@@ -20,25 +20,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      # === CACHING DEPENDENCIES ===
-      - name: Get pip cache directory
-        id: pip-cache
-        run: echo "PIP_CACHE_DIR=$(python -m pip cache dir)" >> $GITHUB_ENV
-
-      - name: Cache pip dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.PIP_CACHE_DIR }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          cache: 'pip'  # Enable caching for pip dependencies
 
       - name: Install dependencies
-        run: pip install pyinstaller numpy noise matplotlib svgwrite rich
+        run: |
+          pip install pyinstaller numpy noise matplotlib svgwrite rich
 
       - name: Build EXE
         run: pyinstaller --onefile create.py
