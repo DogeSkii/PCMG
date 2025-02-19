@@ -1,3 +1,10 @@
+
+# WARNING: This code/resource is licensed under the Creative Commons Attribution 4.0 International License (CC-BY-4.0).
+# You are free to share, copy, and remix the material in any medium, provided proper attribution is given.
+# For more details, visit: https://creativecommons.org/licenses/by/4.0/
+# DogeSkii 2025
+
+# Import Packages
 import numpy as np
 import noise
 import matplotlib.pyplot as plt
@@ -6,8 +13,10 @@ from rich.progress import Progress, TextColumn, TimeRemainingColumn, BarColumn
 from rich.console import Console
 import random
 
+# Init console
 console = Console()
 
+# Get users prefered settings
 def get_config():
     default_config = {
         'WIDTH': 1024,
