@@ -1,0 +1,23 @@
+name: Build EXE
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - run: pip install pyinstaller numpy noise matplotlib svgwrite rich
+
+      - run: pyinstaller --onefile create.py  # Change 'create.py' to your script
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: contour_generator
+          path: dist/create.exe  # Change if your script name is different

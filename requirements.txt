@@ -2,4 +2,4 @@ numpy
 noise
 matplotlib
 svgwrite
-tqdm
+rich
