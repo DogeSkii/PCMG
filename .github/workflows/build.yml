@@ -7,32 +7,29 @@ permissions:
 
 jobs:
   build:
+    # The job will run only if the head commit's message contains the '*' character.
+    if: contains(github.event.head_commit.message, '*')
     runs-on: windows-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set Up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Install Dependencies and Build EXE
-        run: |
-          pip install pyinstaller numpy noise matplotlib svgwrite rich
-          pyinstaller --onefile create.py  # Ensure this produces dist/create.exe
+      - run: pip install pyinstaller numpy noise matplotlib svgwrite rich
 
+      - run: pyinstaller --onefile create.py  # Update as needed
+
+      # Using softprops/action-gh-release as an example for creating a release and uploading your asset
       - name: Create Release and Upload Asset
         id: release
         uses: softprops/action-gh-release@v1
         with:
-          # Use a tag format that isn’t just a SHA (you can also use run numbers or a version file)
           tag_name: v${{ github.run_number }}-build
           name: Release v${{ github.run_number }}-build
-          # Use the head commit message for release notes (you might adjust this as needed)
           body: ${{ github.event.head_commit.message }}
-          # List the files to upload – here we only have one asset
           files: dist/create.exe
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
