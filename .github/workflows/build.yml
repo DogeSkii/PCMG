@@ -17,7 +17,7 @@ jobs:
 
       - run: pyinstaller --onefile create.py  # Change 'create.py' to your script
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: contour_generator
           path: dist/create.exe  # Change if your script name is different
