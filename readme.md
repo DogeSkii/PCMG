@@ -13,6 +13,10 @@ This project generates a procedural contour map based on Perlin noise and export
 
 ## Installation
 
+### Option One
+Use the automatically generated "create.exe". no, it's not a virus it's made with a github action, see .github folder for this script
+
+### Option Two
 To get started, you'll need to install the required Python dependencies. You can do this by creating a `virtualenv` and installing the packages from the `requirements.txt` file.
 
 1. Clone this repository:
