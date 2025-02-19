@@ -1,43 +1,55 @@
 name: Build EXE
 
 on:
-    push:
-      branches:
-        - main
-      tags-ignore:
-        - '*'
-  
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
+
 permissions:
   contents: write  # Required to create releases
 
 jobs:
   build:
-    # The job will run only if the head commit's message contains the '*' character.
-    if: contains(github.event.head_commit.message, '*') && github.ref != 'refs/tags/*'
+    if: contains(github.event.head_commit.message, '*') && startsWith(github.ref, 'refs/heads/')
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - run: pip install pyinstaller numpy noise matplotlib svgwrite rich
-
-      - run: pyinstaller --onefile create.py  # Update as needed
-
       # === CACHING DEPENDENCIES ===
+      - name: Get pip cache directory
+        id: pip-cache
+        run: echo "PIP_CACHE_DIR=$(python -m pip cache dir)" >> $GITHUB_ENV
+
       - name: Cache pip dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          path: ${{ env.PIP_CACHE_DIR }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # Using softprops/action-gh-release as an example for creating a release and uploading your asset
-      - name: Create Release and Upload Asset
+      - name: Install dependencies
+        run: pip install pyinstaller numpy noise matplotlib svgwrite rich
+
+      - name: Build EXE
+        run: pyinstaller --onefile create.py
+
+      - name: Upload EXE as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: contour_generator
+          path: dist/create.exe  # Change if needed
+
+      - name: Create GitHub Release and Upload Asset
         id: release
         uses: softprops/action-gh-release@v1
         with:
