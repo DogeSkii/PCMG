@@ -3,8 +3,8 @@ name: Build EXE
 on: [push]
 
 permissions:
-  contents: write  # Required for creating releases
-  issues: write    # Required for issues and comments (if relevant)
+  contents: write  # Allows creating releases
+  issues: write    # (Optional) Allows issue/comment interactions if needed
 
 jobs:
   build:
@@ -25,9 +25,9 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.sha }}  # Use the commit SHA as the tag name
+          tag_name: v${{ github.sha }}  # Valid tag name with a prefix
           release_name: Release ${{ github.sha }}
-          body: ${{ github.event.head_commit.message }}  # Use commit message as release notes
+          body: ${{ github.event.head_commit.message }}  # Commit message as release notes
           draft: false
           prerelease: false
         env:
@@ -37,6 +37,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/create.exe  # Path to your .exe file
-          asset_name: create.exe  # You can customize the file name if needed
+          asset_path: dist/create.exe  # Ensure this is the correct path to your executable
+          asset_name: create.exe
           asset_content_type: application/octet-stream
