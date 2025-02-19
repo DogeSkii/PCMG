@@ -3,40 +3,36 @@ name: Build EXE
 on: [push]
 
 permissions:
-  contents: write  # Allows creating releases
-  issues: write    # (Optional) Allows issue/comment interactions if needed
+  contents: write  # Required to create releases
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v4
+      - name: Set Up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - run: pip install pyinstaller numpy noise matplotlib svgwrite rich
+      - name: Install Dependencies and Build EXE
+        run: |
+          pip install pyinstaller numpy noise matplotlib svgwrite rich
+          pyinstaller --onefile create.py  # Ensure this produces dist/create.exe
 
-      - run: pyinstaller --onefile create.py  # Change 'create.py' to your script
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Create Release and Upload Asset
+        id: release
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ github.sha }}  # Valid tag name with a prefix
-          release_name: Release ${{ github.sha }}
-          body: ${{ github.event.head_commit.message }}  # Commit message as release notes
-          draft: false
-          prerelease: false
+          # Use a tag format that isn’t just a SHA (you can also use run numbers or a version file)
+          tag_name: v${{ github.run_number }}-build
+          name: Release v${{ github.run_number }}-build
+          # Use the head commit message for release notes (you might adjust this as needed)
+          body: ${{ github.event.head_commit.message }}
+          # List the files to upload – here we only have one asset
+          files: dist/create.exe
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-
-      - name: Upload EXE to Release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/create.exe  # Ensure this is the correct path to your executable
-          asset_name: create.exe
-          asset_content_type: application/octet-stream
