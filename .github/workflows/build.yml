@@ -1,6 +1,11 @@
 name: Build EXE
 
 on: [push]
+
+permissions:
+  contents: write  # Required for creating releases
+  issues: write    # Required for issues and comments (if relevant)
+
 jobs:
   build:
     runs-on: windows-latest
