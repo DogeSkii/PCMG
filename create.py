@@ -8,6 +8,9 @@ import random
 
 console = Console()
 
+# This line was added so i can test the new action, thanks
+
+
 # === CONFIGURATION ===
 WIDTH = 1024  # Image width
 HEIGHT = 1024  # Image height
