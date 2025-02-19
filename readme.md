@@ -41,7 +41,7 @@ create.py
 This will generate a heightmap using Perlin noise and create contour lines at different levels. The contour map will be exported as an SVG file.
 
 ### Script Configuration
-You can modify the following variables to customize the output:
+You will get a prompt to ask if you would like to change any settings.
 - **`WIDTH`** and **`HEIGHT`**: Set the dimensions of the generated map (default: `1024x1024`).
 - **`DEFAULT_SCALE`**: Controls the zoom level of the Perlin noise (default: `150.0`).
 - **`DEFAULT_OCTAVES`**: Controls the detail of the noise (default: `4`).
