@@ -3,6 +3,8 @@
 
 This project generates a procedural contour map based on Perlin noise and exports the result as an SVG file. The map can be customized with different noise scales, contour levels, and line thicknesses.
 
+[![Build EXE](https://github.com/DogeSkii/PCMG/actions/workflows/build.yml/badge.svg)](https://github.com/DogeSkii/PCMG/actions/workflows/build.yml)
+
 ## Features
 - Generate a heightmap using Perlin noise.
 - Create contour lines based on the heightmap.
